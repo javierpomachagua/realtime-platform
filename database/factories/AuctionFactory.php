@@ -18,7 +18,7 @@ class AuctionFactory extends Factory
      */
     public function definition(): array
     {
-        $startingPrice = $this->faker->randomFloat(2, 1, 1000);
+        $startingPrice = $this->faker->randomFloat(0, 1, 1000);
 
         return [
             'item_id' => Item::factory(),
