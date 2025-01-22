@@ -41,6 +41,7 @@
                 </p>
                 <p x-data="{ currentPrice: '{{ \Illuminate\Support\Number::currency($auction->current_price) }}' }"
                    x-on:bid-placed-{{ $auction->id }}.window="currentPrice = $event.detail.bid"
+                   x-on:external-bid-placed-{{ $auction->id }}.window="currentPrice = $event.detail.bid"
                    class="text-green-600 text-xl" x-text="currentPrice"></p>
             </div>
         </div>
