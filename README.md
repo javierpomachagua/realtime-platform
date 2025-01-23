@@ -40,4 +40,9 @@ email: user02@curotec.com
 
 password: password
 
+### Demo
+
+You can use the demo here
+https://auction-platform.javierpoma.com/
+
 
