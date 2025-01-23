@@ -8,6 +8,11 @@ use App\Models\User;
 
 class AuctionPolicy
 {
+    public function view(User $user, Auction $auction): true
+    {
+        return true;
+    }
+
     /**
      * Determine whether the user can create models.
      */

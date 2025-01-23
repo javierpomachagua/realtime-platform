@@ -2,15 +2,9 @@
 
 @php
     use App\Enums\AuctionStatus;
-
-    $statusColors = [
-        AuctionStatus::Pending->value => 'bg-blue-100 text-blue-800',
-        AuctionStatus::Active->value => 'bg-green-100 text-green-800',
-        AuctionStatus::Closed->value => 'bg-gray-100 text-gray-800',
-    ];
 @endphp
 
-<div class="bg-white flex flex-col items-start">
+<div wire:key="auction-{{ $auction->id }}" class="bg-white flex flex-col items-start">
     <div class="relative w-full">
         <img
             src="{{ $auction->item->getFirstMediaUrl() ?: 'https://media.istockphoto.com/id/1197832105/vector/male-hand-holding-megaphone-with-new-product-speech-bubble-loudspeaker-banner-for-business.jpg?s=612x612&w=0&k=20&c=INIM5M-N2DZh6pS6DUBSGh7x9ItOBSC3atZOVJtQf7M=' }}"
@@ -21,10 +15,9 @@
     <div class="w-full px-4 py-2 rounded-b-2xl">
         <div class="mt-2 flex items-center gap-x-4 text-xs">
             <span class="text-gray-500">
-                {{ $auction->end_time->diffForHumans() }}
+                End time: {{ $auction->end_time->diffForHumans() }}
             </span>
-            <span href="#"
-                  class="relative z-10 rounded-full  px-3 py-1.5 font-medium uppercase {{ $statusColors[$auction->status->value] }}">{{ $auction->status->value }}</span>
+            <x-auctions.status :status="$auction->status->value"/>
         </div>
         <div class="group relative">
             <h3 class="mt-3 text-lg/6 font-semibold text-gray-900 group-hover:text-gray-600">
@@ -38,14 +31,14 @@
         <div class="relative mt-4 flex justify-between items-center gap-x-4">
             <div class="text-sm/6">
                 <p class="font-semibold text-gray-900">
-                    Price {{ $auction->current_price }}
+                    Price
                 </p>
-                <p wire:key="auction-current-price-{{ $auction->id }}"
-                   x-data="{ currentPrice: '{{ \Illuminate\Support\Number::currency($auction->current_price) }}' }"
-                   x-on:bid-placed-{{ $auction->id }}.window="currentPrice = $event.detail.bid"
-                   x-on:external-bid-placed-{{ $auction->id }}.window="currentPrice = $event.detail.bid"
-                   class="text-green-600 text-xl"
-                   x-text="currentPrice"></p>
+                <p
+                    x-data="{ currentPrice: '{{ \Illuminate\Support\Number::currency($auction->current_price) }}' }"
+                    x-on:bid-placed-{{ $auction->id }}.window="currentPrice = $event.detail.bid"
+                    x-on:external-bid-placed-{{ $auction->id }}.window="currentPrice = $event.detail.bid"
+                    class="text-green-600 text-xl"
+                    x-text="currentPrice"></p>
             </div>
         </div>
         @if($auction->status === AuctionStatus::Active && ! auth()->user()->is_admin)
@@ -53,10 +46,8 @@
                 <livewire:auctions.place-bid wire:key="place-bid-{{ $auction->id }}" :$auction/>
             </div>
         @endif
-        @if($auction->status === AuctionStatus::Active && auth()->user()->is_admin)
-            @can('finish', $auction)
-                <livewire:auctions.actions wire:key="actions-{{ $auction->id }}" :$auction/>
-            @endcan
-        @endif
+        <div>
+            <livewire:auctions.actions wire:key="actions-{{ $auction->id }}" :$auction/>
+        </div>
     </div>
 </div>
