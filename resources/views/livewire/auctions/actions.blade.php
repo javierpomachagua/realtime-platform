@@ -27,7 +27,7 @@ new class extends Component {
     @can('finish', $auction)
         <x-secondary-button wire:click="finishAuction">Finish</x-secondary-button>
     @endcan
-    <div>
+    <div class="mt-4">
         @can('view', $auction)
             <a href="{{ route('auctions.show', $auction) }}" wire:navigate>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
