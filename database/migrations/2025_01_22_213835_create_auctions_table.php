@@ -21,6 +21,7 @@ return new class extends Migration
             $table->timestamp('end_time');
             $table->decimal('starting_price', 10, 2);
             $table->decimal('current_price', 10, 2);
+            $table->foreignId('winner_id')->nullable()->constrained('users');
             $table->timestamps();
         });
     }

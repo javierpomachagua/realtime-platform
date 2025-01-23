@@ -29,4 +29,13 @@ class AuctionFactory extends Factory
             'current_price' => $startingPrice,
         ];
     }
+
+    public function active()
+    {
+        return $this->state(fn (array $attributes): array => [
+            'status' => AuctionStatus::Active,
+            'start_time' => $this->faker->dateTimeBetween('-1 day', 'now'),
+            'end_time' => $this->faker->dateTimeBetween('now', '+1 week'),
+        ]);
+    }
 }
