@@ -26,12 +26,13 @@ new #[Layout('layouts.guest')] class extends Component {
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
+        $validated['is_admin'] = false;
 
         event(new Registered($user = User::create($validated)));
 
         Auth::login($user);
 
-        $this->redirect(route('auctions', absolute: false), navigate: true);
+        $this->redirect(route('auctions.index', absolute: false), navigate: true);
     }
 }; ?>
 

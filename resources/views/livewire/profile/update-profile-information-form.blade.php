@@ -52,7 +52,7 @@ new class extends Component {
         $user = Auth::user();
 
         if ($user->hasVerifiedEmail()) {
-            $this->redirectIntended(default: route('auctions', absolute: false));
+            $this->redirectIntended(default: route('auctions.index', absolute: false));
 
             return;
         }

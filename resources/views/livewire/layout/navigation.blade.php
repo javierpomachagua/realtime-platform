@@ -22,16 +22,24 @@ new class extends Component {
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('auctions') }}" wire:navigate>
+                    <a href="{{ route('auctions.index') }}" wire:navigate>
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800"/>
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('auctions')" :active="request()->routeIs('auctions')" wire:navigate>
+                    <x-nav-link :href="route('auctions.index')" :active="request()->routeIs('auctions.index')"
+                                wire:navigate>
                         {{ __('Auctions') }}
                     </x-nav-link>
+
+                    @if(auth()->user()->is_admin)
+                        <x-nav-link :href="route('items.index')" :active="request()->routeIs('items.index')"
+                                    wire:navigate>
+                            {{ __('Items') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -89,9 +97,17 @@ new class extends Component {
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('auctions')" :active="request()->routeIs('auctions')" wire:navigate>
+            <x-responsive-nav-link :href="route('auctions.index')" :active="request()->routeIs('auctions.index')"
+                                   wire:navigate>
                 {{ __('Auctions') }}
             </x-responsive-nav-link>
+
+            @if(auth()->user()->is_admin)
+                <x-responsive-nav-link :href="route('items.index')" :active="request()->routeIs('items.index')"
+                                       wire:navigate>
+                    {{ __('Items') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

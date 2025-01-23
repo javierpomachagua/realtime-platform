@@ -19,7 +19,7 @@ new #[Layout('layouts.guest')] class extends Component {
 
         Session::regenerate();
 
-        $this->redirectIntended(default: route('auctions', absolute: false), navigate: true);
+        $this->redirectIntended(default: route('auctions.index', absolute: false), navigate: true);
     }
 }; ?>
 
