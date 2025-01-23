@@ -4,7 +4,7 @@
     use App\Enums\AuctionStatus;
 @endphp
 
-<div class="bg-white flex flex-col items-start">
+<div wire:key="auction-{{ $auction->id }}" class="bg-white flex flex-col items-start">
     <div class="relative w-full">
         <img
             src="{{ $auction->item->getFirstMediaUrl() ?: 'https://media.istockphoto.com/id/1197832105/vector/male-hand-holding-megaphone-with-new-product-speech-bubble-loudspeaker-banner-for-business.jpg?s=612x612&w=0&k=20&c=INIM5M-N2DZh6pS6DUBSGh7x9ItOBSC3atZOVJtQf7M=' }}"
@@ -33,12 +33,12 @@
                 <p class="font-semibold text-gray-900">
                     Price
                 </p>
-                <p wire:key="auction-current-price-{{ $auction->id }}"
-                   x-data="{ currentPrice: '{{ \Illuminate\Support\Number::currency($auction->current_price) }}' }"
-                   x-on:bid-placed-{{ $auction->id }}.window="currentPrice = $event.detail.bid"
-                   x-on:external-bid-placed-{{ $auction->id }}.window="currentPrice = $event.detail.bid"
-                   class="text-green-600 text-xl"
-                   x-text="currentPrice"></p>
+                <p
+                    x-data="{ currentPrice: '{{ \Illuminate\Support\Number::currency($auction->current_price) }}' }"
+                    x-on:bid-placed-{{ $auction->id }}.window="currentPrice = $event.detail.bid"
+                    x-on:external-bid-placed-{{ $auction->id }}.window="currentPrice = $event.detail.bid"
+                    class="text-green-600 text-xl"
+                    x-text="currentPrice"></p>
             </div>
         </div>
         @if($auction->status === AuctionStatus::Active && ! auth()->user()->is_admin)
