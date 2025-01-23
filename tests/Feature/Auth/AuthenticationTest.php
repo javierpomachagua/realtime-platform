@@ -22,7 +22,7 @@ test('users can authenticate using the login screen', function () {
 
     $component
         ->assertHasNoErrors()
-        ->assertRedirect(route('auctions', absolute: false));
+        ->assertRedirect(route('auctions.index', absolute: false));
 
     $this->assertAuthenticated();
 });

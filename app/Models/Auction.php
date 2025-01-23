@@ -31,4 +31,13 @@ class Auction extends Model
     {
         return $this->hasMany(Bid::class);
     }
+
+    public function finish(): bool
+    {
+        return $this->update([
+            'status' => AuctionStatus::Closed,
+            'end_time' => now(),
+            'winner_id' => $this->bids()->latest()->first()?->user_id,
+        ]);
+    }
 }
