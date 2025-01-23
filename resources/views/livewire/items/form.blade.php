@@ -30,10 +30,14 @@ new class extends Component {
         ]);
 
         if ($this->item?->exists()) {
+            $this->authorize('update', $this->item);
+
             $this->item->update($validated);
 
             session()->flash('flash.banner', 'Item updated successfully.');
         } else {
+            $this->authorize('create', Item::class);
+
             Item::create($validated);
 
             session()->flash('flash.banner', 'Item saved successfully.');
