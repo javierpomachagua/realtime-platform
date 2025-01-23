@@ -38,7 +38,7 @@
         <div class="relative mt-4 flex justify-between items-center gap-x-4">
             <div class="text-sm/6">
                 <p class="font-semibold text-gray-900">
-                    Price {{ $auction->current_price }}
+                    Price
                 </p>
                 <p wire:key="auction-current-price-{{ $auction->id }}"
                    x-data="{ currentPrice: '{{ \Illuminate\Support\Number::currency($auction->current_price) }}' }"
@@ -53,10 +53,6 @@
                 <livewire:auctions.place-bid wire:key="place-bid-{{ $auction->id }}" :$auction/>
             </div>
         @endif
-        @if($auction->status === AuctionStatus::Active && auth()->user()->is_admin)
-            @can('finish', $auction)
-                <livewire:auctions.actions wire:key="actions-{{ $auction->id }}" :$auction/>
-            @endcan
-        @endif
+        <livewire:auctions.actions wire:key="actions-{{ $auction->id }}" :$auction/>
     </div>
 </div>
