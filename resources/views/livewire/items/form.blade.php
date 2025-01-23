@@ -3,14 +3,18 @@
 use App\Models\Auction;
 use App\Models\Item;
 use Livewire\Volt\Component;
+use Livewire\WithFileUploads;
 
 new class extends Component {
+
+    use WithFileUploads;
 
     public ?Item $item = null;
 
     public string $name = '';
     public string $description = '';
     public string $price = '';
+    public $image;
 
     public function mount(): void
     {
@@ -27,20 +31,34 @@ new class extends Component {
             'name' => 'required|string',
             'description' => 'required|string',
             'price' => 'required|numeric',
+            'image' => 'nullable|image|max:1024',
         ]);
 
         if ($this->item?->exists()) {
             $this->authorize('update', $this->item);
 
-            $this->item->update($validated);
+            $this->item->update([
+                'name' => $validated['name'],
+                'description' => $validated['description'],
+                'price' => $validated['price'],
+            ]);
 
             session()->flash('flash.banner', 'Item updated successfully.');
         } else {
             $this->authorize('create', Item::class);
 
-            Item::create($validated);
+            $item = Item::create([
+                'name' => $validated['name'],
+                'description' => $validated['description'],
+                'price' => $validated['price'],
+            ]);
 
             session()->flash('flash.banner', 'Item saved successfully.');
+        }
+
+        if ($this->image) {
+            $item->clearMediaCollection();
+            $item->addMedia($this->image->getRealPath())->toMediaCollection();
         }
 
         $this->redirectRoute('items.index', navigate: true);
@@ -58,6 +76,12 @@ new class extends Component {
                     <x-input-label for="name" :value="__('Name')"/>
                     <x-text-input wire:model="name" id="name" class="block w-full rounded-md"/>
                     <x-input-error :messages="$errors->get('name')" class="mt-2"/>
+                </div>
+
+                <div class="col-span-full">
+                    <x-input-label for="image" :value="__('Image')"/>
+                    <x-text-input wire:model="image" id="image" class="block w-full rounded-md" type="file"/>
+                    <x-input-error :messages="$errors->get('image')" class="mt-2"/>
                 </div>
 
                 <div class="col-span-full">

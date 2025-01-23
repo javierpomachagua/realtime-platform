@@ -4,13 +4,16 @@ use App\Models\Auction;
 use App\Models\Item;
 use Livewire\Attributes\On;
 use Livewire\Volt\Component;
+use Livewire\WithPagination;
 
 new class extends Component {
+    use WithPagination;
+
     public function with(): array
     {
         return [
             'items' => Item::query()
-                ->get()
+                ->simplePaginate(6)
         ];
     }
 
@@ -28,5 +31,8 @@ new class extends Component {
         @foreach($items as $item)
             <x-items.card :$item/>
         @endforeach
+    </div>
+    <div class="mt-4">
+        {{ $items->links() }}
     </div>
 </div>
