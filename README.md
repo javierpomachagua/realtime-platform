@@ -36,7 +36,7 @@ email: user01@curotec.com
 
 password: password
 
-email: user012@curotec.com
+email: user02@curotec.com
 
 password: password
 
